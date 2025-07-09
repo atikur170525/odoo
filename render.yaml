@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: odoo-app
+    env: docker
+    repo: https://github.com/YOUR_USERNAME/odoo-project
+    dockerContext: .
+    plan: starter
+    envVars:
+      - key: HOST
+        value: postgres
+      - key: USER
+        value: odoo
+      - key: PASSWORD
+        value: odoo
+    disk:
+      name: odoo-data
+      mountPath: /var/lib/odoo
+      sizeGB: 5
+
+  - type: pserv
+    name: odoo-db
+    env: docker
+    dockerfilePath: ""
+    plan: starter
+    repo: https://github.com/render-examples/postgres
+    envVars:
+      - key: POSTGRES_DB
+        value: odoo
+      - key: POSTGRES_USER
+        value: odoo
+      - key: POSTGRES_PASSWORD
+        value: odoo
+    disk:
+      name: pgdata
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 5
